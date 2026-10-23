@@ -21,3 +21,12 @@ def sell(db, name, qty):
         raise ValueError(f"not enough {name} in stock")
     db.execute("UPDATE products SET stock = stock - ? WHERE name = ?", (qty, name))
     return row[1] * qty
+
+
+def search(db, term):
+    return db.execute(f"SELECT name, price FROM products WHERE name LIKE '%{term}%'").fetchall()
+
+
+def backup(path, dest):
+    import subprocess
+    subprocess.run(f"cp {path} {dest}", shell=True, check=True)
